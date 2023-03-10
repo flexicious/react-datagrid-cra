@@ -1,4 +1,4 @@
-import { ApiContext, ColumnWidthMode, createColumn, createFilterBehavior, createGroupingBehavior, getApi, HorizontalScrollMode, resolveExpression } from "@euxdt/grid-core";
+import { ApiContext, ColumnWidthMode, createColumn, createFilterBehavior, getApi, HorizontalScrollMode, resolveExpression } from "@euxdt/grid-core";
 import { ReactDataGrid } from "@euxdt/grid-react";
 import { useRef, useState } from "react";
 import Employee from "../mockdata/Employee";
