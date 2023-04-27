@@ -1,37 +1,33 @@
 import {
   ApiContext,
-  createColumn,
-  createDragColumn,
-  createEditBehavior,
-  createFilterBehavior,
-  createSelectionColumn,
   DateRangeType,
-  GRID_CONSTANTS,
   FilterOperation,
   FooterOperation,
+  GRID_CONSTANTS,
   GridSelectionMode,
   LockMode,
-} from "@euxdt/grid-core";
-import { createExcelBehavior, createPdfBehavior } from "@euxdt/grid-export";
+  createColumn,
+  createDragColumn,
+  createSelectionColumn
+} from "@ezgrid/grid-core";
 import {
+  SelectionCheckBoxHeaderRenderer,
+  SelectionCheckBoxRenderer,
   createDateFilterOptions,
   createMultiSelectFilterOptions,
   createNumericRangeFilterOptions,
   createSelectFilterOptions,
   createTextInputFilterOptions,
-  createTriStateCheckBoxFilterOptions,
-  ReactDataGrid,
-  SelectionCheckBoxHeaderRenderer,
-  SelectionCheckBoxRenderer,
-} from "@euxdt/grid-react";
-import { Expand } from "@mui/icons-material";
-import { IconButton, useTheme } from "@mui/material";
-import { useEffect, useRef, useState } from "react";
+  createTriStateCheckBoxFilterOptions
+} from "@ezgrid/grid-react";
 import {
   materialAdapter,
   materialNodePropsFunction,
 } from "../adapters";
-
+import Expand from "@mui/icons-material/Expand";
+import { IconButton, useTheme } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { DataGrid } from "../components/DataGrid";
 import FlexiciousMockGenerator from "../mockdata/FlexiciousMockGenerator";
 import LineItem from "../mockdata/LineItem";
 import { MaterialWrapper } from "./material/material-wrapper";
@@ -63,7 +59,7 @@ export const Demo = () => {
     apiRef.current?.api?.propsUpdated();
   };
   return (
-    <ReactDataGrid
+    <DataGrid
       style={{ height: "100%", width: "100%" }}
       id="bigGrid"
       gridOptions={{
@@ -87,17 +83,11 @@ export const Demo = () => {
           : undefined,
         enablePaging: true,
         selectionMode: GridSelectionMode.MultipleRows,
-        behaviors: [
-          createFilterBehavior({ clearSelectionOnFilter: true }),
-          createEditBehavior({}),
-          createPdfBehavior({}),
-          createExcelBehavior({}),
-        ],
         toolbarOptions: {
           enablePdf: true,
           enableExcel: true,
           rightToolbarRenderer: () => (
-            <div className="euxdt-dg-toolbar-section">
+            <div className="ezgrid-dg-toolbar-section">
               <button
                 onClick={() => {
                   setUseMaterialAdapter(!useMaterialAdapter);

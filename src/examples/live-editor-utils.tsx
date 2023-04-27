@@ -1,22 +1,9 @@
-import { NameValue, RendererProps, ColumnOptions, CheckBoxState, debounce, EditStartMode, FilterOperation, FooterOperation, GridSelectionMode, HorizontalScrollMode, LockMode } from "@euxdt/grid-core";
-import { TriStateCheckBox } from "@euxdt/grid-react";
+import { NameValue, RendererProps, ColumnOptions, CheckBoxState, debounce, EditStartMode, FilterOperation, FooterOperation, GridSelectionMode, HorizontalScrollMode, LockMode } from "@ezgrid/grid-core";
+import { GridProperty, TriStateCheckBox } from "@ezgrid/grid-react";
 import { TextField, MenuItem, Box, Select } from "@mui/material";
 import { ReactNode } from "react";
 
-export interface Attribute {
-    name: string;
-    type: string;
-    distinctValues?: string[];
-}
 
-export interface GridProperty {
-    name: string;
-    property: string;
-    type: "string" | "number" | "boolean" | "enum" | "button" | "object";
-    value: any;
-    options?: NameValue[];
-    children?: GridProperty[];
-}
 
 interface ColumnConfigRenderer extends RendererProps {
     onChange: (dt: GridProperty) => void;
@@ -309,12 +296,6 @@ export const GRID_PROPS = [
     {
         property: "enableActiveCellHighlight",
         name: "Enable Active Cell Highlight",
-        type: "boolean",
-        value: undefined,
-    },
-    {
-        property: "enableFocusCellHighlight",
-        name: "Enable Focus Cell Highlight",
         type: "boolean",
         value: undefined,
     },

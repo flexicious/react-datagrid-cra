@@ -1,7 +1,8 @@
-import { ApiContext, ColumnOptions, ColumnWidthMode, createColumn, createFilterBehavior, DateRangeType, FilterOperation, formatCurrency, getApi, getDateRange, HorizontalScrollMode, RendererProps, resolveExpression } from "@euxdt/grid-core";
-import { createDateFilterOptions, createMultiSelectFilterOptions, createTextInputFilterOptions, createTriStateCheckBoxFilterOptions, ReactDataGrid } from "@euxdt/grid-react";
-import { useRef, useState, FC } from "react";
+import { ApiContext, ColumnOptions, ColumnWidthMode, createColumn, createFilterBehavior, DateRangeType, FilterOperation, formatCurrency, getApi, getDateRange, GridOptions, RendererProps, resolveExpression } from "@ezgrid/grid-core";
+import { createDateFilterOptions, createMultiSelectFilterOptions, createTextInputFilterOptions, createTriStateCheckBoxFilterOptions, ReactDataGrid } from "@ezgrid/grid-react";
+import { FC, useRef, useState } from "react";
 import Employee from "../mockdata/Employee";
+import { getScrollOffBelow } from "../utils/column-utils";
 
 const PhoneNumberFilter: FC<RendererProps> = ({ node }) => {
     const api = getApi(node);
@@ -26,7 +27,7 @@ const PhoneNumberFilter: FC<RendererProps> = ({ node }) => {
         }
 
     };
-    return <div className="euxdt-dg-toolbar-section">
+    return <div className="ezgrid-dg-toolbar-section">
         <input maxLength={3} style={{ width: "30%" }} value={areaCode} ref={areaCodeRef} onChange={handleChange} />-
         <input maxLength={3} style={{ width: "30%" }} value={prefix} ref={prefixRef} onChange={handleChange} />-
         <input maxLength={4} style={{ width: "30%" }} value={suffix} ref={suffixRef} onChange={handleChange} />
@@ -34,8 +35,8 @@ const PhoneNumberFilter: FC<RendererProps> = ({ node }) => {
 };
 
 export const FilterOptions = () => {
-    const apiRef = useRef<ApiContext | null>(null);
-    const [data] = useState<Record<string, any>[]>(Employee.getAllEmployees());
+    const apiRef = useRef<ApiContext<Employee> | null>(null);
+    const [data] = useState<Employee[]>(Employee.getAllEmployees());
     const anniversaryRef = useRef<HTMLSelectElement>(null);
     return <ReactDataGrid style={{ height: "100%", width: "100%" }} gridOptions={{
         dataProvider: data,
@@ -44,7 +45,7 @@ export const FilterOptions = () => {
         },
         headerRowHeight: 150,
         enableFooters: false,
-        horizontalScroll: HorizontalScrollMode.Off,
+        horizontalScroll: getScrollOffBelow(),
         behaviors: [
             createFilterBehavior({
                 globalFilterMatchFunction: (item: unknown) => {
@@ -69,7 +70,7 @@ export const FilterOptions = () => {
                 const handleFilterChange = (val: string) => {
                     apiRef.current?.api?.rebuild();
                 };
-                return <div className="euxdt-dg-toolbar-section">
+                return <div className="ezgrid-dg-toolbar-section">
                     Work Anniversary (External Filter + custom filter logic): <select ref={anniversaryRef} onChange={(e) => handleFilterChange(e.target.value)} >
                         <option>Select</option>
                         {
@@ -112,7 +113,7 @@ export const FilterOptions = () => {
                     filterRenderer: ({ node }) => {
                         const api = getApi(node);
                         const filterValue = api.getFilterValue("annualSalary");
-                        return <div className="euxdt-dg-toolbar-section">
+                        return <div className="ezgrid-dg-toolbar-section">
                             <input type="range" min={50000} max={99999} value={filterValue ? resolveExpression(filterValue, "end") : 100000} onChange={(e) => {
                                 api.setFilterValue("annualSalary", {
                                     start: 0, end: parseInt(e.target.value)
@@ -146,7 +147,7 @@ export const FilterOptions = () => {
             {
                 filterOptions: {
                     filterRenderer: PhoneNumberFilter,
-                    filterCompareFunction: (item: unknown, col: ColumnOptions, value: unknown) => {
+                    filterCompareFunction: (item: Employee, col: ColumnOptions, value: unknown) => {
                         const phoneFilter = value as string;
                         const phoneItem = resolveExpression(item, col.dataField) as string;
                         if (phoneFilter && phoneItem) {
@@ -178,5 +179,5 @@ export const FilterOptions = () => {
                 filterOptions: createMultiSelectFilterOptions(),
             }
         ]
-    }}></ReactDataGrid>;
+    } as GridOptions<Employee>}></ReactDataGrid>;
 };

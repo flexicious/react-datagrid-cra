@@ -1,5 +1,5 @@
-import { createColumn, getApi, LockMode, TreeNodeType } from "@euxdt/grid-core";
-import { ReactDataGrid } from "@euxdt/grid-react";
+import { createColumn, getApi, LockMode, TreeNodeType } from "@ezgrid/grid-core";
+import { ReactDataGrid } from "@ezgrid/grid-react";
 import { useState } from "react";
 import FlexiciousMockGenerator from "../mockdata/FlexiciousMockGenerator";
 
@@ -61,11 +61,12 @@ export const ColumnLockModes = () => {
             },
             {
                 ...createColumn("annualRevenue", "currency", "Annual Revenue"),
+                width: 75,
                 lockMode: swapped ? LockMode.Right : LockMode.Left,
                 children: [
-                    { ...createColumn("numEmployees", "number", "Num Employees") },
-                    { ...createColumn("earningsPerShare", "number", "EPS") },
-                    { ...createColumn("lastStockPrice", "number", "Stock Price") }
+                    { ...createColumn("numEmployees", "number", "Num Employees"),width: 75 },
+                    { ...createColumn("earningsPerShare", "number", "EPS") ,width: 75},
+                    { ...createColumn("lastStockPrice", "number", "Stock Price") ,width: 75}
                 ]
 
             },

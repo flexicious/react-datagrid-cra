@@ -1,7 +1,7 @@
 
-import { ApiContext, ColumnOptions, createColumn, createFilterBehavior, createGroupingBehavior, DateRangeType, FilterOperation, FooterOperation, GridSelectionMode, itemToLabel, LockMode, RendererProps, resolveExpression } from "@euxdt/grid-core";
-import { createExcelBehavior, createPdfBehavior } from "@euxdt/grid-export";
-import { createDateFilterOptions, createGroupingColumnFilterOptions, createMultiSelectFilterOptions, createNumericRangeFilterOptions, createSelectFilterOptions, createTextInputFilterOptions, ReactDataGrid } from "@euxdt/grid-react";
+import { ApiContext, ColumnOptions, createColumn, createFilterBehavior, createGroupingBehavior, DateRangeType, FilterOperation, FooterOperation, GridSelectionMode, itemToLabel, LockMode, RendererProps, resolveExpression } from "@ezgrid/grid-core";
+import { createExcelBehavior, createPdfBehavior } from "@ezgrid/grid-export";
+import { createDateFilterOptions, createGroupingColumnFilterOptions, createMultiSelectFilterOptions, createNumericRangeFilterOptions, createSelectFilterOptions, createTextInputFilterOptions, ReactDataGrid } from "@ezgrid/grid-react";
 import { useEffect, useRef, useState } from "react";
 import { materialAdapter } from "../adapters";
 import FlexiciousMockGenerator from "../mockdata/FlexiciousMockGenerator";
@@ -48,7 +48,7 @@ export const Grouping = () => {
     
     return (
         <div style={{ display: "flex", flexDirection: "column", height: "100%", width: "100%" }}>
-            <div className="euxdt-dg-toolbar-section">
+            <div className="ezgrid-dg-toolbar-section">
                 <button onClick={doGroup}>Group By Country, State and City</button>
                 <button onClick={clearGrouping} disabled={groupingFields.length === 0}>Clear Grouping</button>
 
@@ -73,7 +73,7 @@ export const Grouping = () => {
                 <label htmlFor="multi">Multiple</label>
                 {
                     singleGroupingColumn && groupingFields.length > 0 &&
-                    <div className="euxdt-dg-toolbar-section">|
+                    <div className="ezgrid-dg-toolbar-section">|
                         <span>Grouping Filter:</span>
                         <input type="radio" name="groupingFilter" value="single" checked={singleGroupingFilter}
                             onChange={(e) => {
@@ -174,7 +174,7 @@ export const Grouping = () => {
                             }
                             , lockMode: LockMode.Left,
                             enableHierarchy: true,
-                            width: 250,
+                            width: 200,
                             hidden: groupingFields.length === 0 ? true : !singleGroupingColumn,
                         },
                         {

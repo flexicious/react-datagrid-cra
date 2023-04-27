@@ -1,5 +1,5 @@
-import { ApiContext, ColumnOptions, createColumn, getFlat, resolveExpression } from "@euxdt/grid-core";
-import { ReactDataGrid, SelectionCheckBoxHeaderRenderer, SelectionCheckBoxRenderer } from "@euxdt/grid-react";
+import { ApiContext, ColumnOptions, createColumn, getFlat, resolveExpression } from "@ezgrid/grid-core";
+import { ReactDataGrid, SelectionCheckBoxHeaderRenderer, SelectionCheckBoxRenderer } from "@ezgrid/grid-react";
 import { useRef } from "react";
 import Employee from "../mockdata/Employee";
 import { createFiscalYearColumnGroup } from "../utils/column-utils";
@@ -57,7 +57,7 @@ export const LargeDynamicGrid = () => {
     });
     const allCols = getFlat<ColumnOptions>(fiscalYears);
     for (let i = 0; i < dp.length; i++) {
-        const dpItem:any = dp[i];
+        const dpItem = dp[i];
         for (let j = 0; j < dpItem.children.length; j++) {
             const model = dpItem.children[j];
             model.children = [];
@@ -75,7 +75,7 @@ export const LargeDynamicGrid = () => {
     for (let i = 0; i < allCols.length; i++) {
         let mCol = allCols[i];
         for (let j = 0; j < dp.length; j++) {
-            let dpItem:any = dp[j];
+            let dpItem = dp[j];
             let total = 0;
             for (let k = 0; k < dpItem.children.length; k++) {
                 let model = dpItem.children[k];

@@ -1,9 +1,10 @@
-import { ApiContext, ColumnOptions, ColumnWidthMode, createColumn, createEditBehavior, createFilterBehavior, createSelectionColumn, EditInfo, EditStartMode, getApi, getRowColFromNode, HorizontalScrollMode, itemToLabel, RendererProps } from "@euxdt/grid-core";
-import { CheckBoxEditor, DateEditor, ReactDataGrid, SelectEditor, SelectionCheckBoxHeaderRenderer, SelectionCheckBoxRenderer, TextInputEditor } from "@euxdt/grid-react";
+import { ApiContext, ColumnOptions, ColumnWidthMode, createColumn, createEditBehavior, createFilterBehavior, EditInfo, EditStartMode, getApi, getRowColFromNode, GridSelectionMode, itemToLabel, RendererProps } from "@ezgrid/grid-core";
+import { CheckBoxEditor, DateEditor, ReactDataGrid, SelectEditor, TextInputEditor } from "@ezgrid/grid-react";
 import { TextField, useTheme } from "@mui/material";
-import { FC, useEffect, useRef, useState, KeyboardEvent } from "react";
+import { FC, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { materialAdapter, materialNodePropsFunction } from "../adapters";
 import Employee from "../mockdata/Employee";
+import { getScrollOffBelow } from "../utils/column-utils";
 
 const PhoneNumberEditor: FC<RendererProps> = ({ node }) => {
     const api = getApi(node);
@@ -35,7 +36,7 @@ const PhoneNumberEditor: FC<RendererProps> = ({ node }) => {
             }
         }
     };
-    return <div className="euxdt-dg-toolbar-section">
+    return <div className="ezgrid-dg-toolbar-section">
         <TextField inputProps={{ maxLength: 3, ref: areaCodeRef }} style={{ width: "25% " }} value={areaCode} onChange={handleChange}
             onKeyDown={handleKeyDown} variant="standard" />-
         <TextField inputProps={{ maxLength: 3, ref: prefixRef }} style={{ width: "25%" }} value={prefix} onChange={handleChange}
@@ -59,12 +60,11 @@ export const MaterialEditors = () => {
         },
         adapter: useMaterialAdapter ? materialAdapter : undefined,
         nodePropsFunction: useMaterialAdapter ? materialNodePropsFunction(theme): undefined,
-
-        enableFocusCellHighlight: true,
+        selectionMode: GridSelectionMode.MultipleCells,
         headerRowHeight: 75,
         enableFooters: false,
         enableFilters: false,
-        horizontalScroll: HorizontalScrollMode.Off,
+        horizontalScroll: getScrollOffBelow(),
         enablePaging: true,
         behaviors: [
             createEditBehavior({}),
@@ -75,7 +75,7 @@ export const MaterialEditors = () => {
             enableQuickFind: false,
             rightToolbarRenderer: ({ node }) => {
                 const api = getApi(node);
-                return <div className="euxdt-dg-toolbar-section">
+                return <div className="ezgrid-dg-toolbar-section">
 
                     <button
                     onClick={() => {
@@ -106,12 +106,6 @@ export const MaterialEditors = () => {
             }
         }, columns: [
             {
-                ...createSelectionColumn({
-                    itemRenderer: SelectionCheckBoxRenderer,
-                    headerRenderer: SelectionCheckBoxHeaderRenderer
-                }),
-            },
-            {
                 ...createColumn("employeeId", "string", "Id"),
                 textAlign: "right",
                 widthMode: ColumnWidthMode.Fixed,
@@ -123,7 +117,7 @@ export const MaterialEditors = () => {
                     enableEdit: editMode,
                     editStartMode: editStart,
                     editorRenderer: TextInputEditor,
-                    validateValue: (value: EditInfo, columnOptions: ColumnOptions) => {
+                    validateValueFunction: (value: EditInfo, columnOptions: ColumnOptions) => {
                         if (parseInt((value.newValue?.toString() || "").replace(/,/g, "")) < 50000) {
                             value.validationMessage = "Salary should be greater than 50000";
                         } else if (parseInt((value.newValue?.toString() || "").replace(/,/g, "")) > 100000) {
@@ -160,7 +154,7 @@ export const MaterialEditors = () => {
                 editOptions: {
                     enableEdit: editMode,
                     editStartMode: editStart,
-                    validateValue: (value: EditInfo) => {
+                    validateValueFunction: (value: EditInfo) => {
                         const newVal = value.newValue;
                         const regex = /^\d{3}-\d{3}-\d{4}$/;
                         if (!regex.test(newVal?.toString() || "")) {

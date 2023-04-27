@@ -1,7 +1,7 @@
 
-import { ColumnWidthMode, createColumn, createEditBehavior, createFilterBehavior, FilterOperation, FilterPageSortLoadMode, FooterOperation, GridSelectionMode, LockMode, RowPositionInfo, ServerInfo } from "@euxdt/grid-core";
-import { createExcelBehavior, createPdfBehavior } from "@euxdt/grid-export";
-import { createTextInputFilterOptions, ReactDataGrid } from "@euxdt/grid-react";
+import { ColumnWidthMode, createColumn, createEditBehavior, createFilterBehavior, FilterOperation, FilterPageSortLoadMode, FooterOperation, GridSelectionMode, LockMode, RowPositionInfo, ServerInfo } from "@ezgrid/grid-core";
+import { createExcelBehavior, createPdfBehavior } from "@ezgrid/grid-export";
+import { createTextInputFilterOptions, ReactDataGrid } from "@ezgrid/grid-react";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/spinner/Spinner";
 import { getDealsForOrg, getOrganizations } from "../mockdata/MockService";
@@ -31,7 +31,7 @@ export const NestedLazyLoadGrid = () => {
             //we are an org, we need its deals
             const orgId = (row.data as Organization).id;
             const deals = await getDealsForOrg(orgId);
-            const childrenMap = serverInfo?.childrenMap || new Map();
+            const childrenMap = serverInfo?.childrenMap || {};
             childrenMap[orgId.toString()]= deals;
             setServerInfo({
                 ...serverInfo,
